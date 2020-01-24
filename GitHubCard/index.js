@@ -54,7 +54,7 @@ const followersArray = [];
   bigknell
 */
 
-
+const nameArray = ['tetondan','dustinmyers','justsml','luishrd','bigknell'];
 
 const createCard = (cardObject) =>{
   
@@ -71,25 +71,9 @@ const createCard = (cardObject) =>{
   const usrFollowing = document.createElement('p');
   const usrBio = document.createElement('p');
 
-  //appending elements as per the design specified above.
-  card.appendChild(usrImg);
-  card.appendChild(cardInfo);
-  
-  cardInfo.appendChild(usrTitle);
-  cardInfo.appendChild(usrName);
-  cardInfo.appendChild(usrLocation);
-  cardInfo.appendChild(usrProfile);
-  
-  //usrProfile.appendChild(usrAnchor);
-  usrProfile.insertAdjacentElement("beforeend",usrAnchor);
-  cardInfo.appendChild(usrFollowers);
-  cardInfo.appendChild(usrFollowing);
-  cardInfo.appendChild(usrBio);
-
-  card.classList.add('card');
+    card.classList.add('card');
   cardInfo.classList.add('card-info');
-  usrTitle.classList.add('h3');
-  usrName.classList.add('p');
+  
   usrLocation.classList.add('p');
   usrProfile.classList.add('p');
   usrAnchor.classList.add('p');
@@ -105,14 +89,30 @@ const createCard = (cardObject) =>{
   usrLocation.textContent = 'Location: ' + cardObject.location;
   
   usrAnchor.href = cardObject.html_url;
+  usrAnchor.textContent =  cardObject.html_url;
   usrProfile.textContent = "Profile: ";
-  usrAnchor.textContent = cardObject.html_url;
-  usrFollowers.textContent = 'Followers: ' +cardObject.followers;
+  usrFollowers.textContent = 'Followers: '+cardObject.followers;
   usrFollowing.textContent = 'Following: '+ cardObject.following;
   usrBio.textContent = cardObject.bio; 
 
-  return card;
+  //appending elements as per the design specified above.
+  card.appendChild(usrImg);
+  card.appendChild(cardInfo);
+  
+  cardInfo.appendChild(usrTitle);
+  cardInfo.appendChild(usrName);
+  cardInfo.appendChild(usrLocation);
+  cardInfo.appendChild(usrProfile);
+  
+  usrProfile.appendChild(usrAnchor);
+  //usrProfile.insertAdjacentElement("beforeend",usrAnchor);
+  cardInfo.appendChild(usrFollowers);
+  cardInfo.appendChild(usrFollowing);
+  cardInfo.appendChild(usrBio);
 
+
+
+  return card;
 
 }//end create object
 const cardAttatch = document.querySelector('.cards');
@@ -129,7 +129,25 @@ axiosPromise.then((res)=>{
   const newCard = (createCard(res.data));
 
   console.log('newcard', newCard);
-
+  
   cardAttatch.appendChild(newCard);
+  console.log('usrAnchor',newCard.usrAnchor);
 
 });
+
+for(let i = 0; i<nameArray.length; i++){
+  let newaxiosPromise = axios.get("https://api.github.com/users/"+nameArray[i]);
+  newaxiosPromise.then((res)=>{
+
+    console.log('res ', res);
+    console.log('res.data.message ',res.data);
+  
+    const newCard = (createCard(res.data));
+  
+    console.log('newcard', newCard);
+    
+    cardAttatch.appendChild(newCard);
+    console.log('usrAnchor',newCard.usrAnchor);
+  
+  });
+}
