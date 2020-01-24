@@ -53,3 +53,83 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+
+
+const createCard = (cardObject) =>{
+  
+  //creating user elements
+  const card = document.createElement('div');
+  const usrImg = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const usrTitle = document.createElement('h3');
+  const usrName = document.createElement('p');
+  const usrLocation = document.createElement('p');
+  const usrProfile = document.createElement('p');
+  const usrAnchor = document.createElement('a');
+  const usrFollowers = document.createElement('p');
+  const usrFollowing = document.createElement('p');
+  const usrBio = document.createElement('p');
+
+  //appending elements as per the design specified above.
+  card.appendChild(usrImg);
+  card.appendChild(cardInfo);
+  
+  cardInfo.appendChild(usrTitle);
+  cardInfo.appendChild(usrName);
+  cardInfo.appendChild(usrLocation);
+  cardInfo.appendChild(usrProfile);
+  
+  //usrProfile.appendChild(usrAnchor);
+  usrProfile.insertAdjacentElement("beforeend",usrAnchor);
+  cardInfo.appendChild(usrFollowers);
+  cardInfo.appendChild(usrFollowing);
+  cardInfo.appendChild(usrBio);
+
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  usrTitle.classList.add('h3');
+  usrName.classList.add('p');
+  usrLocation.classList.add('p');
+  usrProfile.classList.add('p');
+  usrAnchor.classList.add('p');
+  usrFollowers.classList.add('p');
+  usrFollowing.classList.add('p');
+  usrBio.classList.add('p');
+  usrTitle.classList.add('name');
+  usrName.classList.add('username');
+
+  usrImg.src = cardObject.avatar_url;
+  usrTitle.textContent = cardObject.name;
+  usrName.textContent =  cardObject.login;
+  usrLocation.textContent = 'Location: ' + cardObject.location;
+  
+  usrAnchor.href = cardObject.html_url;
+  usrProfile.textContent = "Profile: ";
+  usrAnchor.textContent = cardObject.html_url;
+  usrFollowers.textContent = 'Followers: ' +cardObject.followers;
+  usrFollowing.textContent = 'Following: '+ cardObject.following;
+  usrBio.textContent = cardObject.bio; 
+
+  return card;
+
+
+}//end create object
+const cardAttatch = document.querySelector('.cards');
+
+const axiosPromise = axios.get("https://api.github.com/users/TBmo7");
+
+console.log(axiosPromise);
+
+axiosPromise.then((res)=>{
+
+  console.log('res ', res);
+  console.log('res.data.message ',res.data);
+
+  const newCard = (createCard(res.data));
+
+  console.log('newcard', newCard);
+
+  cardAttatch.appendChild(newCard);
+
+});
